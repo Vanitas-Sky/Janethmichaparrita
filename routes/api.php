@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\EquipmentController;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Public Auth Routes
+Route::post('/auth/login', [AuthController::class, 'login']);
+
+// Protected Routes
+Route::middleware('auth:sanctum')->group(function () {
+    // Auth routes
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::get('/user', [AuthController::class, 'me']);
+
+    // Equipment routes - CRUD
+    Route::apiResource('equipment', EquipmentController::class);
+    
+    // Equipment stats and utilities
+    Route::get('/equipment/stats/dashboard', [EquipmentController::class, 'stats']);
+    Route::get('/equipment/utilities/laboratories', [EquipmentController::class, 'laboratories']);
 });
