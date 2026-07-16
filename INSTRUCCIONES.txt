@@ -1,0 +1,37 @@
+INSTRUCCIONES DE DESARROLLO (QUÉ LLEVARÁ LA PÁGINA)
+Ahora pasamos a la parte práctica. Así es como debe funcionar y estructurarse el código de EduTech Connect bajo este nuevo enfoque educativo:
+
+1. Estructura de la Base de Datos
+Tabla users: Almacena id, name, email, password (encriptada con bcrypt) y role (con valores como 'coordinador', 'docente').
+
+Tabla equipos (Tu Catálogo Escolar): Almacena el inventario de los laboratorios. Campos: id, numero_inventario (string único), nombre (string, ej. 'Osciloscopio', 'Microscopio'), laboratorio (string, ej. 'Electrónica', 'Biología'), cantidad (integer) y estado (string, ej. 'Disponible', 'Mantenimiento').
+
+2. Diseño de la Página Web (Frontend)
+Página de Login (/login):
+
+Un diseño institucional y limpio con un formulario centralizado.
+
+Campos para ingresar el Correo Institucional y la Contraseña.
+
+Validaciones dinámicas que avisen al usuario si dejó campos vacíos o si el formato del correo no es el correcto antes de hacer clic en enviar.
+
+Dashboard e Interfaz del CRUD (/inventario):
+
+Una barra superior con el logotipo de la escuela, el nombre del docente/coordinador firmado y el botón de "Cerrar Sesión".
+
+Una tabla centralizada con el listado de todos los equipos y materiales de los laboratorios registrados. Cada fila tendrá botones para "Editar equipo" y "Dar de baja (Eliminar)".
+
+Un botón destacado llamado "Registrar Nuevo Equipo" que abra una ventana modal con el formulario de captura, asegurando que campos como la cantidad no acepten números negativos.
+
+3. El Backend (API REST en Laravel - routes/api.php)
+Crearás endpoints puramente dedicados a responder en formato JSON:
+
+POST /api/v1/auth/login -> Valida las credenciales del docente y genera un token con Laravel Sanctum.
+
+GET /api/v1/equipos -> Devuelve la lista completa de materiales del inventario escolar en formato JSON (200 OK).
+
+POST /api/v1/equipos -> Registra un nuevo equipo. Valida que el numero_inventario sea único y que la cantidad sea un número entero mayor a cero. Si falla, devuelve 422 Unprocessable Entity con los errores estructurados.
+
+PUT /api/v1/equipos/{id} -> Permite actualizar los datos o cambiar el estado del equipo (ej. pasarlo a mantenimiento).
+
+DELETE /api/v1/equipos/{id} -> Remueve el equipo del sistema (204 No Content).
