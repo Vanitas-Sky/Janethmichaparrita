@@ -13,20 +13,21 @@ const routes = [
     },
   },
   {
-    path: '/dashboard',
+    path: '/inventario',
     name: 'dashboard',
     component: DashboardView,
+    alias: '/dashboard',
     meta: {
       requiresAuth: true,
     },
   },
   {
     path: '/',
-    redirect: '/dashboard',
+    redirect: '/inventario',
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/dashboard',
+    redirect: '/inventario',
   },
 ]
 

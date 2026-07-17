@@ -46,12 +46,8 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role,
-            ]
+            ],
         ], 200);
-            'token' => $token,
-            'user' => $user,
-            'message' => 'Inicio de sesión exitoso',
-        ]);
     }
 
     /**

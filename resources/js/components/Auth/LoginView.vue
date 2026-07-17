@@ -15,7 +15,7 @@
         <form @submit.prevent="handleLogin">
           <!-- Email Input -->
           <BaseInput
-            v-model="form.email"
+            :model-value="form.email"
             type="email"
             label="Correo Institucional"
             placeholder="docente@instituto.edu.mx"
@@ -23,6 +23,8 @@
             required
             icon
             class="mb-4"
+            @update:modelValue="(value) => handleFieldInput('email', value)"
+            @blur="() => validateField('email')"
           >
             <template #icon>
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -34,7 +36,7 @@
 
           <!-- Password Input -->
           <BaseInput
-            v-model="form.password"
+            :model-value="form.password"
             type="password"
             label="Contraseña"
             placeholder="••••••••"
@@ -42,6 +44,8 @@
             required
             icon
             class="mb-2"
+            @update:modelValue="(value) => handleFieldInput('password', value)"
+            @blur="() => validateField('password')"
           >
             <template #icon>
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -104,27 +108,48 @@ const errors = ref({
 
 const isLoading = ref(false)
 
+const isValidEmail = (email) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return re.test(email)
+}
+
+const validateField = (field) => {
+  if (field === 'email') {
+    if (!form.value.email.trim()) {
+      errors.value.email = 'El correo es requerido'
+    } else if (!isValidEmail(form.value.email)) {
+      errors.value.email = 'Por favor ingresa un correo válido'
+    } else {
+      errors.value.email = null
+    }
+  }
+
+  if (field === 'password') {
+    if (!form.value.password.trim()) {
+      errors.value.password = 'La contraseña es requerida'
+    } else if (form.value.password.length < 6) {
+      errors.value.password = 'La contraseña debe tener al menos 6 caracteres'
+    } else {
+      errors.value.password = null
+    }
+  }
+}
+
 const validateForm = () => {
   errors.value = { email: null, password: null, general: null }
 
-  if (!form.value.email) {
-    errors.value.email = 'El correo es requerido'
-  } else if (!isValidEmail(form.value.email)) {
-    errors.value.email = 'Por favor ingresa un correo válido'
-  }
-
-  if (!form.value.password) {
-    errors.value.password = 'La contraseña es requerida'
-  } else if (form.value.password.length < 6) {
-    errors.value.password = 'La contraseña debe tener al menos 6 caracteres'
-  }
+  validateField('email')
+  validateField('password')
 
   return !errors.value.email && !errors.value.password
 }
 
-const isValidEmail = (email) => {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return re.test(email)
+const handleFieldInput = (field, value) => {
+  form.value[field] = value
+
+  if (errors.value[field]) {
+    validateField(field)
+  }
 }
 
 const handleLogin = async () => {

@@ -9,7 +9,7 @@ export const useEquipmentStore = defineStore('equipment', () => {
 
   const fetchEquipment = async (filters = {}) => {
     try {
-      const response = await api.get('/api/equipment', { params: filters })
+      const response = await api.get('/equipos', { params: filters })
       equipment.value = response.data.data || []
       return response.data
     } catch (error) {
@@ -20,7 +20,7 @@ export const useEquipmentStore = defineStore('equipment', () => {
 
   const fetchStats = async () => {
     try {
-      const response = await api.get('/api/equipment/stats/dashboard')
+      const response = await api.get('/equipos/estadisticas/dashboard')
       stats.value = response.data
       return response.data
     } catch (error) {
@@ -31,7 +31,7 @@ export const useEquipmentStore = defineStore('equipment', () => {
 
   const fetchLaboratories = async () => {
     try {
-      const response = await api.get('/api/equipment/utilities/laboratories')
+      const response = await api.get('/equipos/utilidades/laboratorios')
       laboratories.value = response.data.laboratories || []
       return response.data
     } catch (error) {
@@ -42,11 +42,11 @@ export const useEquipmentStore = defineStore('equipment', () => {
 
   const createEquipment = async (data) => {
     try {
-      const response = await api.post('/api/equipment', data)
+      const response = await api.post('/equipos', data)
       return response.data
     } catch (error) {
       throw new Error(
-        error.response?.data?.message || 
+        error.response?.data?.message ||
         error.response?.data?.errors?.quantity_available?.[0] ||
         'Error al crear equipo'
       )
@@ -55,11 +55,11 @@ export const useEquipmentStore = defineStore('equipment', () => {
 
   const updateEquipment = async (id, data) => {
     try {
-      const response = await api.put(`/api/equipment/${id}`, data)
+      const response = await api.put(`/equipos/${id}`, data)
       return response.data
     } catch (error) {
       throw new Error(
-        error.response?.data?.message || 
+        error.response?.data?.message ||
         error.response?.data?.errors?.quantity_available?.[0] ||
         'Error al actualizar equipo'
       )
@@ -68,7 +68,7 @@ export const useEquipmentStore = defineStore('equipment', () => {
 
   const deleteEquipment = async (id) => {
     try {
-      const response = await api.delete(`/api/equipment/${id}`)
+      const response = await api.delete(`/equipos/${id}`)
       return response.data
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Error al eliminar equipo')

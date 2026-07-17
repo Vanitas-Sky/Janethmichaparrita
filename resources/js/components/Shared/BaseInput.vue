@@ -12,7 +12,10 @@
         :placeholder="placeholder"
         :disabled="disabled"
         :required="required"
+        :min="min"
+        :step="step"
         @input="$emit('update:modelValue', $event.target.value)"
+        @blur="$emit('blur', $event)"
         :class="[
           'w-full px-4 py-2 rounded-lg border-2 transition-colors',
           'focus:outline-none focus:ring-2 focus:ring-blue-500',
@@ -73,7 +76,15 @@ defineProps({
     type: String,
     default: () => `input-${Math.random().toString(36).substr(2, 9)}`,
   },
+  min: {
+    type: [String, Number],
+    default: null,
+  },
+  step: {
+    type: [String, Number],
+    default: null,
+  },
 })
 
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue', 'blur'])
 </script>

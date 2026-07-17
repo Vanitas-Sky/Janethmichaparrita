@@ -81,6 +81,8 @@
           v-model.number="form.quantity_total"
           type="number"
           label="Cantidad Total"
+          min="1"
+          step="1"
           :error="errors.quantity_total"
           required
         />
@@ -90,6 +92,8 @@
           v-model.number="form.quantity_available"
           type="number"
           label="Cantidad Disponible"
+          min="0"
+          step="1"
           :error="errors.quantity_available"
           required
         />
