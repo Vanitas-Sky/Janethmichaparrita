@@ -1,5 +1,18 @@
 # 📋 Plan de Desarrollo - EduTech Connect
 
+## Fase 1a: Estructura de Base de Datos ✅ COMPLETADA
+- [x] Tabla `users` con rol (coordinador, docente)
+- [x] Tabla `equipos` con estructura en español
+- [x] Modelo `User` con soporte para role
+- [x] Modelo `Equipo` con validaciones
+- [x] Migraciones optimizadas con índices
+- [x] API Endpoints para CRUD de equipos
+- [x] Endpoints de estadísticas y laboratorios
+- [x] Seeders con datos de ejemplo
+- [x] Autenticación mejorada con roles
+
+## Fase 1b: Configuración Base ✅ COMPLETADA
+- [x] Configurar Laravel como API REST
 ## Fase 1: Configuración Base ✅ COMPLETADA
 - [x] Configurar Laravel como API REST
 - [x] Crear modelo `Equipment` con migraciones
@@ -16,6 +29,10 @@
 - [ ] Tests unitarios para controladores
 - [ ] Tests funcionales de API
 - [ ] Validaciones avanzadas
+- [ ] Middleware de autorización por rol
+- [ ] Manejo de excepciones
+- [ ] Rate limiting
+- [ ] Logging de auditoría
 - [ ] Middleware de autorización
 - [ ] Manejo de excepciones
 
@@ -35,6 +52,26 @@
 
 ---
 
+## 🗄️ Estructura de Base de Datos Implementada
+
+### Tabla `users`
+- **Campos:** id, name, email, password (bcrypt), role (enum), created_at, updated_at
+- **Role valores:** 'coordinador', 'docente' (default: 'docente')
+- **Índices:** PK (id), UNIQUE (email)
+
+### Tabla `equipos` (Tu Catálogo Escolar)
+- **Campos:** id, numero_inventario (único), nombre, laboratorio, cantidad, estado
+- **Estados válidos:** 'Disponible', 'Mantenimiento', 'Dañado', 'Inactivo'
+- **Índices:** laboratorio, estado, FULLTEXT (nombre, numero_inventario)
+
+### API Endpoints
+- **CRUD:** GET/POST/PUT/DELETE /api/equipos
+- **Estadísticas:** GET /api/equipos/estadisticas/dashboard
+- **Utilidades:** GET /api/equipos/utilidades/laboratorios
+- **Auth:** POST /api/auth/login, POST /api/auth/logout, GET /api/user
+
+---
+
 ## 🎨 Paleta de Colores Confirmada
 - **Primario:** Blanco (`#FFFFFF`), Gris Claro (`#F8FAFC`)
 - **Secundario:** Azul Institucional (`#1E3A8A`)
@@ -43,6 +80,7 @@
 - **Alerta:** Rojo Coral (`#EF4444`)
 
 ## 📱 Vistas Principales (COMPLETADAS)
+1. **Login** ✅ - Autenticación segura con roles
 1. **Login** ✅ - Autenticación segura
 2. **Dashboard** ✅ - Panel principal con estadísticas
 3. **Modal CRUD** ✅ - Crear/Editar equipos
@@ -66,6 +104,13 @@
 ---
 
 ## 📊 Estado General
+- **Modelos:** 2/2 ✅ (User, Equipo)
+- **Controladores API:** 2/2 ✅ (EquipoController, AuthController)
+- **Migraciones:** 2/2 ✅ (users, equipos)
+- **Rutas API:** 10+ endpoints ✅
+- **Componentes Vue:** 12/12 ✅
+- **Stores Pinia:** 2/2 ✅
+- **Seeders:** Completos ✅
 - **Controladores API:** 2/2 ✅
 - **Modelos:** 2/2 ✅
 - **Migraciones:** 2/2 ✅

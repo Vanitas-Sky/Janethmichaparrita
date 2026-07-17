@@ -19,12 +19,18 @@ class AuthController extends Controller
         $validated = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
+        ], [
+            'email.required' => 'El email es obligatorio',
+            'email.email' => 'El email debe ser válido',
+            'password.required' => 'La contraseña es obligatoria',
+            'password.min' => 'La contraseña debe tener al menos 6 caracteres',
         ]);
 
         $user = User::where('email', $validated['email'])->first();
 
         if (!$user || !Hash::check($validated['password'], $user->password)) {
             return response()->json([
+                'success' => false,
                 'message' => 'Las credenciales proporcionadas son inválidas',
             ], 401);
         }
@@ -32,6 +38,16 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
+            'success' => true,
+            'message' => 'Inicio de sesión exitoso',
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+            ]
+        ], 200);
             'token' => $token,
             'user' => $user,
             'message' => 'Inicio de sesión exitoso',

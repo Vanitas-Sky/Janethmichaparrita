@@ -11,6 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('equipos', function (Blueprint $table) {
+            $table->id();
+            $table->string('numero_inventario')->unique()->comment('Número de inventario único');
+            $table->string('nombre')->comment('Nombre del equipo (ej. Osciloscopio, Microscopio)');
+            $table->string('laboratorio')->comment('Laboratorio asignado (ej. Electrónica, Biología)');
+            $table->integer('cantidad')->default(0)->comment('Cantidad disponible del equipo');
+            $table->enum('estado', ['Disponible', 'Mantenimiento', 'Dañado', 'Inactivo'])->default('Disponible')->comment('Estado del equipo');
+            $table->timestamps();
+            
+            // Índices para búsquedas rápidas
+            $table->index('laboratorio');
+            $table->index('estado');
+            $table->fullText(['nombre', 'numero_inventario']); // Para búsqueda full-text
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
             $table->string('sku')->unique()->comment('Stock Keeping Unit - Número de inventario');
