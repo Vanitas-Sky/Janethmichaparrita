@@ -19,11 +19,12 @@ return new class extends Migration
             $table->integer('cantidad')->default(0)->comment('Cantidad disponible del equipo');
             $table->enum('estado', ['Disponible', 'Mantenimiento', 'Dañado', 'Inactivo'])->default('Disponible')->comment('Estado del equipo');
             $table->timestamps();
-            
-            // Índices para búsquedas rápidas
+
             $table->index('laboratorio');
             $table->index('estado');
-            $table->fullText(['nombre', 'numero_inventario']); // Para búsqueda full-text
+            $table->fullText(['nombre', 'numero_inventario']);
+        });
+
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
             $table->string('sku')->unique()->comment('Stock Keeping Unit - Número de inventario');
@@ -36,12 +37,11 @@ return new class extends Migration
             $table->timestamp('last_maintenance')->nullable()->comment('Última fecha de mantenimiento');
             $table->text('notes')->nullable()->comment('Notas adicionales');
             $table->timestamps();
-            
-            // Índices para búsquedas rápidas
+
             $table->index('laboratory');
             $table->index('status');
             $table->index('category');
-            $table->fullText(['name', 'sku']); // Para búsqueda full-text
+            $table->fullText(['name', 'sku']);
         });
     }
 
@@ -51,5 +51,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('equipment');
+        Schema::dropIfExists('equipos');
     }
 };

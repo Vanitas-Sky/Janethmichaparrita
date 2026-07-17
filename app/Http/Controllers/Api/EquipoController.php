@@ -65,7 +65,7 @@ class EquipoController extends Controller
                 'numero_inventario' => 'required|string|unique:equipos|max:50',
                 'nombre' => 'required|string|max:100',
                 'laboratorio' => 'required|string|max:50',
-                'cantidad' => 'required|integer|min:0',
+                'cantidad' => 'required|integer|min:1',
                 'estado' => 'required|in:' . implode(',', Equipo::estados()),
             ], [
                 'numero_inventario.required' => 'El número de inventario es obligatorio',
@@ -73,7 +73,8 @@ class EquipoController extends Controller
                 'nombre.required' => 'El nombre del equipo es obligatorio',
                 'laboratorio.required' => 'El laboratorio es obligatorio',
                 'cantidad.required' => 'La cantidad es obligatoria',
-                'cantidad.min' => 'La cantidad no puede ser negativa',
+                'cantidad.integer' => 'La cantidad debe ser un número entero',
+                'cantidad.min' => 'La cantidad debe ser mayor a cero',
                 'estado.required' => 'El estado es obligatorio',
                 'estado.in' => 'El estado no es válido',
             ]);
@@ -137,8 +138,11 @@ class EquipoController extends Controller
                 'numero_inventario' => 'sometimes|string|unique:equipos,numero_inventario,' . $id . '|max:50',
                 'nombre' => 'sometimes|string|max:100',
                 'laboratorio' => 'sometimes|string|max:50',
-                'cantidad' => 'sometimes|integer|min:0',
+                'cantidad' => 'sometimes|integer|min:1',
                 'estado' => 'sometimes|in:' . implode(',', Equipo::estados()),
+            ], [
+                'cantidad.integer' => 'La cantidad debe ser un número entero',
+                'cantidad.min' => 'La cantidad debe ser mayor a cero',
             ]);
 
             $equipo->update($validado);
@@ -176,10 +180,7 @@ class EquipoController extends Controller
             $equipo = Equipo::findOrFail($id);
             $equipo->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Equipo eliminado exitosamente'
-            ], 200);
+            return response()->json(null, 204);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json([
                 'success' => false,
